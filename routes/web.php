@@ -56,12 +56,14 @@ Route::prefix('admin')->middleware('admin')->controller(AdminController::class)-
     Route::get('/hapus-billboard/{code}', 'hapusBillboard')->name('hapus.billoard');
     Route::get('/hapus-music/{code}', 'hapusMusic')->name('hapus.music');
     Route::get('/hapus-genre/{code}', 'hapusGenre')->name('hapus.genre');
-    Route::get('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::get('/setuju-music/{code}', 'setujuMusic')->name('setuju.upload.music');
 
+    Route::post('/hapus-verified/{code}', 'hapusVerified')->name('hapus.verified');
     Route::POST('/setuju-verified/{code}', 'setujuVerified')->name('tambah.verified');
     Route::post('/uploadBillboard', 'buatBillboard')->name('uploadBillboard');
     Route::post('/genre', 'buatGenre')->name('buat.genre');
+    Route::post('/genre-edit', 'editGenre')->name('edit.genre');
+    Route::post('/genre-edit-iklan', 'buatiklan')->name('edit.iklan');
 });
 
 Route::post('/validationSIgnInAdmin', [AdminController::class, 'storeSignIn'])->name('storeSignIn.admin');
@@ -142,7 +144,7 @@ Route::prefix('artis-verified')->middleware(['auth', 'artistVerified'])->control
     Route::get('/peraturan', function () {
         return view('artisVerified.peraturan', ['title' => 'MusiCave']);
     })->name('peraturan.artisVerified');
-    
+
     Route::post('/project', 'createProject')->name('createProject.artisVerified');
     Route::post('/unggahAudio', 'unggahAudio')->name('unggah.artisVerified');
     Route::post('/buat-album/{code}', 'buatAlbum')->name('tambah.album.artisVerified');

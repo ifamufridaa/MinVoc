@@ -220,36 +220,36 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        
+
         /*===================================*/
 
         $(document).ready(function() {
             var itemsPerPage = 4;
             var currentPage = 1;
-    
+
             function setURLParameter(page) {
                 var newURL = window.location.href.split('?')[0] + '?page=' + page;
                 window.history.replaceState({}, document.title, newURL);
             }
-    
+
             function getURLParameter() {
                 var urlParams = new URLSearchParams(window.location.search);
                 return parseInt(urlParams.get('page')) || 1;
             }
-    
+
             currentPage = getURLParameter();
-    
+
             function showTableRows() {
                 var start = (currentPage - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
                 $(".baris").hide();
                 $(".baris").slice(start, end).show();
             }
-    
+
             function updatePagination() {
                 $(".pagination").empty();
                 var numPages = Math.ceil($(".baris").length / itemsPerPage);
-    
+
                 for (var i = 1; i <= numPages; i++) {
                     var activeClass = i === currentPage ? "active" : "";
                     var buttonText = i.toString();
@@ -257,12 +257,12 @@
                     if (i === currentPage) {
                         buttonClass += " active";
                     }
-    
+
                     var button = $("<button>")
                         .addClass("page-item " + activeClass)
                         .addClass(buttonClass)
                         .text(buttonText);
-    
+
                     button.click(function() {
                         var page = parseInt($(this).text());
                         currentPage = page;
@@ -270,18 +270,18 @@
                         showTableRows();
                         updatePagination();
                     });
-    
+
                     $(".pagination").append($("<li>").append(button));
                 }
-    
+
                 if (numPages <= 1) {
                     $(".pagination").hide();
                 }
             }
-    
+
             showTableRows();
             updatePagination();
-    
+
             setURLParameter(currentPage);
         });
     </script>

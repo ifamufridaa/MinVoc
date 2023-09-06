@@ -29,7 +29,6 @@
                             </div>
                             <div class="text-md-right">
                                 <button type="submit" class="btn">Setujui</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal1" class="btn">Tolak</button>
                             </div>
 
 
@@ -44,7 +43,8 @@
 
 @section('content')
 <!-- Modal -->
-<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal bg-white">
@@ -56,9 +56,9 @@
                 <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="post">
                     @csrf
                     <div class="form-group">
-                        <a href="" class="close-button far fa-times-circle"></a>
+                        <a href="#" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Alasan Menolak Persetujuan</h3>
-                        <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda"></textarea>
+                        <textarea class="form-control mt-3 " id="alasan" name="alasan" rows="10" placeholder="Tulis alasan anda" required></textarea>
                     </div>
                     <div class="text-md-right">
                     <button type="submit" class="btn">Kirim</button>
@@ -204,7 +204,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at->format('d F Y') }}</td>
+                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at}}</td>
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}
                                                     </td>
@@ -214,6 +214,9 @@
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="far fa-eye text-info"></i>
                                                         </button>
+                                                        <button class="btn btnicon mt-1" data-bs-toggle="modal" data-bs-target="#modal1">
+                                                        <i class="far fa-times-circle text-danger"></i>
+                                                    </button>
                                                     </td>
                                                 </tr>
                                             @endif

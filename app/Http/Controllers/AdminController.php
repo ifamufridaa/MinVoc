@@ -107,6 +107,7 @@ class AdminController extends Controller
 
         $title = "MusiCave";
         $artist = artist::where('is_verified', 1)->get();
+        $billboards = billboard::all();
         try {
             if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
                 $backgroundBillboard = $request->file('image_background')->store('backgorund_billboard', 'public');
@@ -122,10 +123,10 @@ class AdminController extends Controller
             ]);
         } catch (\Throwable $th) {
             Alert::error('message', 'Gagal Untuk Menambah Billboard');
-            return response()->view('admin.iklan', compact('artist', 'title'));
+            return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
         }
         Alert::success('message', 'Berhasil Untuk Menambah Billboard');
-        return response()->view('admin.iklan', compact('artist', 'title'));
+        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
 
     protected function buatGenre(Request $request)
@@ -173,6 +174,59 @@ class AdminController extends Controller
             }
         }
     }
+    protected function editGenre(Request $request,genre $genres)
+{
+    $validator = Validator::make(
+        $request->only('name', 'images'),
+        [
+            'name' => 'required|string|max:50', // Hapus validasi unik jika diperlukan
+            'images' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+        ]
+    );
+
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    } else {
+        try {
+
+
+            DB::beginTransaction();
+            $genre = genre::find($genres->$item->id);
+
+
+            if (!$genre) {
+                // Genre tidak ditemukan, mungkin berikan pesan kesalahan
+                return redirect()->back()->with('error', 'Genre not found.');
+            }
+
+            // Update data genre sesuai dengan input form
+            $genre->name = $request->input('name');
+
+            // Handle file upload jika ada
+            if ($request->hasFile('images')) {
+                $imagePath = $request->file('images')->store('genre_images', 'public');
+                $genre->images = $imagePath;
+            }
+
+            $genre->save();
+
+            // Commit the transaction
+            DB::commit();
+
+            Alert::success('message', 'Success Mengedit Genre');
+            return redirect()->back()->with('success', 'Genre updated successfully.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error editing genre: ' . $th->getMessage());
+
+            Alert::error('message', 'Gagal Mengedit');
+            return redirect()->back()->with('error', 'Failed to edit genre.');
+        }
+    }
+}
+
 
     protected function setujuVerified(Request $request, string $code)
     {
@@ -196,7 +250,7 @@ class AdminController extends Controller
     protected function hapusVerified(Request $request, string $code)
     {
         $artis = artist::where('code', $code)->first();
-
+        dd($artis);
         try {
             $artis->image = "none";
             $artis->pengajuan_verified_at = null;
