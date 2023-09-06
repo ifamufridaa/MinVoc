@@ -214,12 +214,15 @@
                 <!-- page-body-wrapper ends -->
             </div>
             <!-- container-scroller -->
+            @foreach ($billboards as $item)
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="card window">
                     <div class="card-body">
                         <a href="" class="close-button far fa-times-circle"></a>
                         <h3 class="judul">Edit Iklan</h3>
-                        <form class="row" action="">
+                        <form class="row" action="{{ route('edit.billboard' ,$item->id) }}" method="POST" enctype="multipart/form-data" >
+                            @csrf
+
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama
@@ -258,6 +261,7 @@
                         </form>
                     </div>
                 </div>
+                @endforeach
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <script>

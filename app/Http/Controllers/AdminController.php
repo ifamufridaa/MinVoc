@@ -129,6 +129,52 @@ class AdminController extends Controller
         return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
 
+    public function editBillboard(Request $request, $billboards)
+{
+    $validator = Validator::make(
+        $request->only('artis_id'),
+        [
+            'artis_id' => 'required',
+        ]
+    );
+
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    $title = "MusiCave";
+    $artist = artist::where('is_verified', 1)->get();
+    $billboards = billboard::all();
+
+    try {
+        // Cari billboard yang akan diedit berdasarkan ID
+        $billboard = billboard::find($billboards->id);
+
+        if (!$billboard) {
+            return redirect()->back()->with('error', 'Billboard not found.');
+        }
+
+        if ($request->hasFile('image_background') && $request->hasFile('image_artis')) {
+            $backgroundBillboard = $request->file('image_background')->store('background_billboard', 'public');
+            $backgroundArtis = $request->file('image_artis')->store('image_artis', 'public');
+            $billboard->image_background = $backgroundBillboard;
+            $billboard->image_artis = $backgroundArtis;
+        }
+
+        $billboard->artis_id = $request->input('artis_id');
+        $billboard->deskripsi = $request->input('deskripsi');
+        $billboard->save();
+    } catch (\Throwable $th) {
+        Alert::error('message', 'Gagal Untuk Mengedit Billboard');
+        return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
+    }
+
+    Alert::success('message', 'Berhasil Untuk Mengedit Billboard');
+    return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
+}
+
     protected function buatGenre(Request $request)
     {
         $validator = Validator::make(
@@ -174,7 +220,7 @@ class AdminController extends Controller
             }
         }
     }
-    protected function editGenre(Request $request,genre $genres)
+    public function editGenre(Request $request,$genres)
 {
     $validator = Validator::make(
         $request->only('name', 'images'),
@@ -193,7 +239,7 @@ class AdminController extends Controller
 
 
             DB::beginTransaction();
-            $genre = genre::find($genres->$item->id);
+            $genre = genre::find($genres->id);
 
 
             if (!$genre) {

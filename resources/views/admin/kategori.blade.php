@@ -52,11 +52,6 @@
                                                         <td class="table-cell">
                                                                 <button type="button" class="btn btnicon" data-toggle="modal"data-target="#exampleModalCenter{{ $item->id }}">
                                                                     <i class="fas fa-edit " style="color: #5b6b89"></i>   </button>
-
-                                                            <button class="btn btnicon "
-                                                                onclick="deleteGenre('{{ $item->code }}')">
-                                                                <i class="fas fa-edit" style="color: #5b6b89"></i>
-                                                            </button>
                                                             <button class="btn btnicon"
                                                                 onclick="deleteGenre('{{ $item->code }}')">
                                                                 <i class="far fa-times-circle text-danger"></i>
@@ -84,7 +79,6 @@
                     </div>
 
                     <!-- popup -->
-<<<<<<< HEAD
                     <div id="popuptambah">
                         <div class="card window">
                             <div class="card-body">
@@ -94,21 +88,6 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-md-12">
-=======
-                    <!-- Modal -->
-                    <div class="modal fade" id="popuptambah" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title" id="exampleModalLabel">Tambah Genre</h3>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('buat.genre') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
->>>>>>> b082318d1854a051dc6c80c899aa69a0e8d6f612
                                         <div class="mb-3">
                                             <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
                                             <input type="text" name="name" class="form-control form-i" id="namaproyek"
@@ -141,6 +120,7 @@
                         <h3 class="judul">Edit Kategori</h3>
                         <form class="row" action="{{ route('edit.genre', $item->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                         
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="namakategori" class="form-label judulnottebal">Nama Kategori</label>
