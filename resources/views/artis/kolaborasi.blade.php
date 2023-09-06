@@ -4,7 +4,7 @@
     <div class="modal fade" id="staticBackdrop-{{ $item->code }}" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="background-color: white">
+            <div class="modal-content border-0" style="background-color: white">
                 <div class="modal-header border-0">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Kolaborasi</h1>
                     <button type="button" class="btn-unstyled" data-bs-dismiss="modal" aria-label="Close">
@@ -202,14 +202,13 @@
                                     <thead class="table-header">
                                         <tr class="table-row header headerlengkung">
                                             <th class="table-cell"> Nama Proyek </th>
-                                            <th class="table-cell"> Harga </th>
                                             <th class="table-cell"> Tanggal </th>
                                             <th class="table-cell"> Aksi </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
+                                            {{-- @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none') --}}
                                                 <tr class="table-row">
                                                     <td class="table-cell">
                                                         <span class="pl-2">{{ $item->name }}</span>
@@ -217,12 +216,12 @@
                                                     <td class="table-cell">
                                                         <div>Rp {{ $item->harga }}</div>
                                                     </td>
-                                                    <td class="table-cell">{{ $item->created_at->toDateString() }}</td>
+                                                    <td class="table-cell">{{ $item->created_at->format('d F Y') }}</td>
                                                     <td class="d-flex align-items-center">
-                                                        <a href="" class="btn-unstyled mr-2" data-bs-toggle="modal"
+                                                        <button class="btn-unstyled mr-2" data-bs-toggle="modal"
                                                             data-bs-target="#staticBackdrop-{{ $item->code }}">
                                                             <i class="mdi mdi-eye btn-icon fa-lg text-primary" style="font-size: 20px; margin-right: 2px;"></i>
-                                                        </a>
+                                                        </button>
                                                         <form action="{{ route('reject.project') }}" method="post"
                                                             class="m-0">
                                                             @csrf
@@ -236,57 +235,11 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @endif
+                                            {{-- @endif --}}
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            {{-- <div class="table-responsive">
-
-                                <table class="table custom-table mt-3" style="background-color: #6c6c6c;">
-                                    <thead>
-                                        <tr>
-                                            <th> Nama Proyek </th>
-                                            <th> Harga </th>
-                                            <th> Tanggal </th>
-                                            <th> Aksi </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($datas as $item)
-                                            @if (!$item->is_reject && $item->judul == 'none' && $item->lirik == 'none')
-                                                <tr>
-                                                    <td>
-                                                        <span class="pl-2">{{ $item->name }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <div>Rp {{ $item->harga }}</div>
-                                                    </td>
-                                                    <td>{{ $item->created_at->toDateString() }}</td>
-                                                    <td class="d-flex align-items-center bg-warning">
-                                                        <button type="button" class="btn-unstyled" data-bs-toggle="modal"
-                                                            data-bs-target="#staticBackdrop-{{ $item->code }}">
-                                                            <i class="mdi mdi-eye btn-icon text-primary"></i>
-                                                        </button>
-
-                                                        <form action="{{ route('reject.project') }}" method="post"
-                                                            class="">
-                                                            @csrf
-                                                            <button class="btn-unstyled d-block" type="submit">
-                                                                <input type="hidden" name="code"
-                                                                    value="{{ $item->code }}">
-                                                                <input type="hidden" name="is_reject" value="true">
-                                                                <i
-                                                                    class="mdi mdi-close-circle-outline btn-icon text-danger"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div> --}}
                         </div>
                     </div>
                 </div>

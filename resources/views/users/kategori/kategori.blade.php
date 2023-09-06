@@ -1,33 +1,7 @@
 @extends('users.components.usersTemplates')
 
 @section('content')
-    @foreach ($songs as $item)
-        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="card window">
-                <div class="card-body">
-                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
-                    <a href="#" class="close-button far fa-times-circle"></a>
-                    <form class="row" action="{{ route('tambah.playlist', $item->code) }}" method="POST">
-                        @csrf
-                        <div class="col-m`d-12">
-                            <div class="mb-4">
-                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
-                                <select name="playlist_id" class="form-select" id="namaartis">
-                                    @foreach ($playlists as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="text-md-right">
-                            <button class="btn" type="submit">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
+    @include('partials.tambahkeplaylist')
 
     <link rel="stylesheet" href="/user/assets/css/kategori.css">
     <div class="main-panel">

@@ -3,6 +3,18 @@
     <link rel="stylesheet" href="/admin/assets/css/dashboard.css">
     <!-- partial | ISI -->
     <div class="main-panel">
+        <style>
+            .avatar {
+                width: auto;
+                /* Menghapus lebar tetap */
+                height: 40px;
+                /* Menentukan tinggi gambar */
+                object-fit: cover;
+                /* Memastikan gambar diisi sepenuhnya dan tidak melar */
+                margin-right: 10px;
+                border-radius: 0;
+            }
+        </style>
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 mb-3">
@@ -78,6 +90,7 @@
                                             @endif
                                         @endforeach
                                     </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -108,7 +121,7 @@
                 ],
                 datasets: [{
                     label: 'Pendapatan',
-                    data: [5, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
+                    data: [1, 3.5, 2.5, 0.5, 4.5, 1, 2, 5, 4, 2.5, 3, 1.5],
                     backgroundColor: [
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(153, 102, 255, 0.2)',

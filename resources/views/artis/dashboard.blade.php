@@ -3,6 +3,33 @@
 @section('content')
     <link rel="stylesheet" href="/user/assets/css/dashboard.css">
 
+    @foreach ($songs as $item)
+        <div id="staticBackdrop-{{ $item->code }}" class="modal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="card window">
+                <div class="card-body">
+                    <h3 class="judul p-0 mb-4">Tambah Ke Playlist</h3>
+                    <a href="" class="close-button far fa-times-circle"></a>
+                    <form class="row" action="{{ route('tambah.playlist.artis', $item->code) }}" method="POST">
+                        @csrf
+                        <div class="col-m`d-12">
+                            <div class="mb-4">
+                                <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
+                                <select name="playlist_id" class="form-select" id="namaartis">
+                                    @foreach ($playlists as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-md-right">
+                            <button class="btn" type="submit">Tambah</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
     @include('partials.tambahkeplaylist')
 
 
@@ -76,7 +103,7 @@
                                                             <p style="pointer-events: none;">{{ $item->waktu }}</p>
                                                             <a data-bs-toggle="modal"
                                                                 data-bs-target="#staticBackdrop-{{ $item->code }}"
-                                                                style="color: #957dad">
+                                                                style="color: #957dad cursor: pointer">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px"
                                                                     y="0px" width="20" height="20"
                                                                     viewBox="0 2 24 24">

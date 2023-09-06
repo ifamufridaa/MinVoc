@@ -56,12 +56,12 @@
                                     <div class="preview-list">
                                         <form action="{{ route('create.project') }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="code" value="{{ $project[0]->code }}">
+                                            <input type="hidden" name="code" value="{{ $project->code }}">
                                             <div class="preview-item">
                                                 <div class="preview-item-content d-sm-flex flex-grow">
                                                     <h3 class="fw-semibold" style="color: #957dad; margin-top: -30px;">
                                                         Project
-                                                        {{ $project[0]->name }}</h3>
+                                                        {{ $project->name }}</h3>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -69,7 +69,7 @@
                                                     class="form-control form-i input-judul pl-3" id="namaproyek"
                                                     placeholder="Judul Lagu" style="background-color: #ffffff" required>
                                             </div>
-                                            <div id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></div>
+                                            <textarea name="lirik" id="summernote" style="background-color: #ffffff; border: 1px solid #6d6d6d"></textarea>
                                             <script>
                                                 $('#summernote').summernote({
                                                     placeholder: 'Teks',
@@ -110,26 +110,26 @@
                                         <div class="chat" style="margin-top: -20px; position: relative">
                                             <form action="{{ route('message.project') }}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="id_project" value="{{ $project[0]->id }}">
+                                                <input type="hidden" name="id_project" value="{{ $project->id }}">
                                                 <div class="card ">
                                                     <div style="height: 415px">
                                                         <div class="card-body"
                                                             style="overflow-y: scroll; height: 70vh; background-color: white; border-radius: 10px; border: 1px solid rgba(0,0,0,.2);">
                                                             <div style="display: flex; flex-direction: column;">
-                                                                <span
+                                                                {{-- <span
                                                                     style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
                                                                 <span class="mb-2"
                                                                     style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">ewfawe
-                                                                </span>
-                                                                {{-- @foreach ($datas as $key => $item)
+                                                                </span> --}}
+                                                                @foreach ($datas as $key => $item)
+                                                                @dd($item)
                                                                     @if ($key == 0 || $item->messages->name != $datas[$key - 1]->messages->name)
                                                                         <span
                                                                             style="font-size: 12px; margin-bottom: 3px; color: rgb(171, 171, 171)">ghhhh</span>
                                                                     @endif
                                                                     <span class="mb-2"
                                                                         style="font-size: 14px; color: rgb(52, 52, 52); background-color: whitesmoke; max-width: 50%; border-radius: 15px; text-align: left; padding: 3px 10px">{{ $item->message }}</span>
-                                                                @endforeach --}}
-                                                                {{-- @dd($datas) --}}
+                                                                @endforeach
                                                             </div>
                                                             <div class="input-with-icon"
                                                                 style="position: absolute; bottom: 0; left: 0; right: 10px; padding: 10px;">

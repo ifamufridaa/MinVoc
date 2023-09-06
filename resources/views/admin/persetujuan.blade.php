@@ -71,7 +71,7 @@
                     <div class="modal-content" style="background-color: whitesmoke">
                         <div class="card-body">
                             <h3 class="judul">Persetujuan Unggah Lagu</h3>
-                            <a href="javascript:void(0);" id="closeButton" class="close-button far fa-times-circle"></a>
+                            <a href="" class="close-button far fa-times-circle"></a>
                             <div class="row mt-4">
                                 <div class="col-md-12">
                                     <h5 class="judul">Tanggal Pengajuan</h5>
@@ -107,13 +107,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Fungsi untuk menutup tanpa mereset tautan
-        document.getElementById('closeButton').addEventListener('click', function (e) {
-            e.preventDefault(); // Menghentikan tindakan default dari link
-            // Tambahkan tindakan penutupan di sini
-            // Misalnya, mengubah tampilan elemen yang ingin ditutup
-            // document.getElementById('elementToClose').style.display = 'none';
-        });
 
         $(document).ready(function() {
 
@@ -140,36 +133,6 @@
             $('#popup .close-button').click(function() {
                 $('#popup').hide();
             });
-        });
-
-        $(document).ready(function() {
-            // Isi menu dropdown dengan opsi secara dinamis
-            function populateDropdown(id, options) {
-                var dropdown = $("#" + id + " + .dropdown-menu");
-                options.forEach(function(option) {
-                    dropdown.append("<a class='dropdown-item' href='#'>" + option + "</a>");
-                });
-            }
-
-            // Isi dropdown tanggal
-            var tanggalOptions = Array.from({
-                length: 31
-            }, (_, i) => (i + 1).toString());
-            populateDropdown("tanggalDropdown", tanggalOptions);
-
-            // Isi dropdown bulan
-            var bulanOptions = [
-                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-            ];
-            populateDropdown("bulanDropdown", bulanOptions);
-
-            // Isi dropdown tahun (dari tahun 2000 hingga tahun sekarang)
-            var tahunSekarang = new Date().getFullYear();
-            var tahunOptions = Array.from({
-                length: tahunSekarang - 1999
-            }, (_, i) => (2000 + i).toString());
-            populateDropdown("tahunDropdown", tahunOptions);
         });
 
         /*===================================*/

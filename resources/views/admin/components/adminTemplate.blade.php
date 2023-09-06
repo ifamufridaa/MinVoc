@@ -215,17 +215,17 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg"
+                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
                                         alt="">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                                 aria-labelledby="profileDropdown">
                                 <div class="p-3 mb-0 gap-3"
-                                    style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-                                    <img class="img-xs rounded-circle" src="assets/images/faces/face15.jpg"
+                                    style="display: flex; flex-direction: row; align-items: center;">
+                                    <img class="img-xs rounded-circle" src="https://cdn.pnghd.pics/data/815/profil-wa-kosong-28.jpg"
                                         alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
                                 </div>
                                 <a class="dropdown-item preview-item" href="{{ route('logout.users') }}">
                                     <div class="preview-thumbnail">

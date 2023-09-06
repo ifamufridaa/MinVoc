@@ -126,10 +126,13 @@ class ArtistController extends Controller
                 'name' => $request->input('name'),
                 'image' => $imagePath,
             ]);
+            $title = "MusiCave";
+            $playlists = playlist::all();
+            $albums = album::all();
         } catch (\Throwable $th) {
-            return response()->redirectTo('/artis-verified/playlist')->with('failed', "failed");
+            return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
         }
-        return response()->redirectTo('/artis-verified/playlist')->with('message', "success");
+        return response()->view('artis.playlist', compact('title', 'playlists', 'albums'));
     }
 
     protected function verifiedAccount(string $code, Request $request)
@@ -204,13 +207,11 @@ class ArtistController extends Controller
             ]
         );
 
-
         if ($validate->fails()) {
             return redirect()->back()
                 ->withErrors($validate)
                 ->withInput();
         }
-
 
         $user = User::where('code', $code)->first();
         $existingPhotoPath = $user->avatar;
@@ -222,7 +223,13 @@ class ArtistController extends Controller
                     ->withInput();
             }
 
-            $newImage = $request->file('avatar')->store('images', 'public');
+
+            if (Storage::disk('public')->exists($existingPhotoPath) == "images/default.png") {
+                $newImage = $request->file('avatar')->store('images', 'public');
+            } else if (Storage::disk('public')->exists($existingPhotoPath)) {
+                Storage::disk('public')->delete($existingPhotoPath);
+                $newImage = $request->file('avatar')->store('images', 'public');
+            }
 
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
                 $value = [
@@ -244,9 +251,6 @@ class ArtistController extends Controller
                     'password' => $user->password,
                     'role_id' => $user->role_id,
                 ];
-            }
-            if (Storage::disk('public')->exists($existingPhotoPath)) {
-                Storage::disk('public')->delete($existingPhotoPath);
             }
         } else {
             if ($request->input('deskripsi') === "none" || $request->input('deskripsi') === null) {
@@ -467,12 +471,10 @@ class ArtistController extends Controller
         $user = user::where('code', $code)->first();
         $playlists = playlist::all();
         $songAll = song::all();
-        
-        if ($song)
-        {
+
+        if ($song) {
             return view('artis.search.songSearch', compact('song', 'title', 'songAll', 'playlists'));
-        } else if ($user)
-        {
+        } else if ($user) {
             $songUser = song::where('artis_id', $user->id)->get();
             return view('artis.search.artisSearch', compact('user', 'title', 'songUser', 'playlists'));
         }
@@ -625,8 +627,14 @@ class ArtistController extends Controller
     protected function viewLirikAndChat(Request $request, string $code)
     {
         $title = "Kolaborasi";
-        $project = DB::table('projects')->where('code', $code)->get();
+        $project = DB::table('projects')->where('code', $code)->first();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
         $datas = messages::with('messages')->get();
+        try {
+            projects::where('code', $project->code)->update(['penerima_project' => $artis->id]);
+        } catch (\Throwable $th) {
+            return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
+        }
         return response()->view('artis.lirikAndChat', compact('title', 'project', 'datas'));
     }
 
@@ -675,7 +683,6 @@ class ArtistController extends Controller
         $data = [
             'code' => $project->code,
             'name' => $project->name,
-            'genre' => $project->genre,
             'judul' => $request->input('judul'),
             'lirik' => $request->input('lirik'),
             'konsep' => $project->konsep,
@@ -688,32 +695,33 @@ class ArtistController extends Controller
         try {
             $project->update($data);
         } catch (Throwable $e) {
-            return response()->redirectTo('/artis/dashboard')->with('message', "Gagal untuk register!!");
+            return response()->redirectTo('/artis/kolaborasi')->with('message', "Gagal untuk register!!");
         }
-        return response()->redirectTo('/artis/dashboard')->with('message', 'User created successfully.');
+        return response()->redirectTo('/artis/kolaborasi')->with('message', 'User created successfully.');
     }
 
-    // protected function message(Request $request)
-    // {
-    //     $message = messages::create([
-    //         'code' => Str::uuid(),
-    //         'sender_id' => Auth::user()->id,
-    //         'receiver_id' => ,
-    //         'project_id' => $request->input('id_project'),
-    //         'message' => $request->input('message')
-    //     ]);
-    //     $data = messages::with('messages')->get();
-    //     dd($message);
-    //     try {
-    //     } catch (\Throwable $th) {
-    //         return redirect()->back();
-    //     }
+    protected function message(Request $request)
+    {
+        $project = projects::where('id', $request->input('id_project'))->first();
+        $user = artist::where('id', auth()->user()->id)->first();
+        $message = messages::create([
+            'code' => Str::uuid(),
+            'sender_id' => $project->pembuat_project,
+            'receiver_id' => $project->penerima_project,
+            'project_id' => $project->id,
+            'message' => $request->input('message')
+        ]);
+        $data = messages::with('messages')->get();
+        try {
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
 
-    //     return redirect()->back()->with([
-    //         'message' => $message->message,
-    //         'datas' => $data
-    //     ]);
-    // }
+        return redirect()->back()->with([
+            'message' => $message->message,
+            'datas' => $data
+        ]);
+    }
 
     protected function rejectProject(Request $request)
     {

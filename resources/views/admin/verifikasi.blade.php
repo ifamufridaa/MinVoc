@@ -43,8 +43,13 @@
 
 @section('content')
 <!-- Modal -->
+<<<<<<< HEAD
 
   <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+=======
+@foreach ($artist as $item)
+<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+>>>>>>> b082318d1854a051dc6c80c899aa69a0e8d6f612
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal bg-white">
@@ -52,7 +57,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-white">
-
+                {{-- @dd($item) --}}
                 <form id="hapus" action="{{ route('hapus.verified', $item->code) }}" method="post">
                     @csrf
                     <div class="form-group">
@@ -68,6 +73,7 @@
         </div>
     </div>
 </div>
+@endforeach
 
     <link rel="stylesheet" href="/admin/assets/css/verifikasi.css">
     <!-- partial | ISI -->
@@ -204,7 +210,11 @@
                                                             </div>
                                                         </div>
                                                     </td>
+<<<<<<< HEAD
                                                     <td class="table-cell mt-1">{{ $item->pengajuan_verified_at}}</td>
+=======
+                                                    <td class="table-cell mt-1">{{ $item->pengajuan_verified_at }}</td>
+>>>>>>> b082318d1854a051dc6c80c899aa69a0e8d6f612
                                                     <td class="table-cell text-warning mt-1">
                                                         {{ $item->verification_status }}
                                                     </td>

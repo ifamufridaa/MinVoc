@@ -53,6 +53,7 @@
                         <div class="mb-4">
                             <label for="namaartis" class="form-label judulnottebal">Nama Playlist</label>
                             <select name="playlist_id" class="form-select" id="namaartis">
+                                <option value="" style="display: none;" selected disabled></option>
                                 @foreach ($playlists as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -60,10 +61,21 @@
                         </div>
                     </div>
                     <div class="text-md-right">
-                        <button class="btn" type="submit">Tambah</button>
+                        <button class="btn" type="submit" onclick="return validateForm();">Tambah</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @endforeach
+
+<script>
+    function validateForm() {
+        var selectedOption = document.getElementById("namaartis").value;
+        if (selectedOption === "") {
+            alert("Pilih sebuah playlist terlebih dahulu!");
+            return false; // Mencegah pengiriman formulir jika tidak ada opsi yang dipilih
+        }
+        return true; // Memungkinkan pengiriman formulir jika opsi terpilih
+    }
+</script>

@@ -31,9 +31,11 @@ class ArtistVerifiedController extends Controller
         $title = "MusiCave";
         $songs = song::all();
         $genres = genre::all();
+        $playlists = playlist::all();
         $artist = artist::with('user')->get();
+        $playlists = playlist::all();
         $billboards = billboard::all();
-        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards'));
+        return response()->view('artisVerified.dashboard', compact('title', 'songs', 'genres', 'artist', 'billboards', 'playlists'));
     }
 
     protected function playlist(): Response
@@ -373,7 +375,9 @@ class ArtistVerifiedController extends Controller
     {
         $title = "MusiCave";
         $genre = genre::where('code', $code)->first();
-        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre'));
+        $playlists = playlist::all();
+        $songs = song::where('genre_id', $genre->id)->get();
+        return response()->view('artisVerified.kategori.kategori', compact('title', 'genre', 'playlists', 'songs'));
     }
 
     protected function buatPlaylist(): Response
@@ -537,8 +541,14 @@ class ArtistVerifiedController extends Controller
     protected function viewLirikAndChat(Request $request, string $code)
     {
         $title = "Kolaborasi";
-        $project = DB::table('projects')->where('code', $code)->get();
+        $project = DB::table('projects')->where('code', $code)->first();
+        $artis = artist::where('user_id', auth()->user()->id)->first();
         $datas = messages::with('messages')->get();
+        try {
+            projects::where('code', $project->code)->update(['pembuat_project' => $artis->id]);
+        } catch (\Throwable $th) {
+            return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'datas'));
+        }
         return response()->view('artisVerified.lirikAndChat', compact('title', 'project', 'datas'));
     }
 
@@ -608,16 +618,17 @@ class ArtistVerifiedController extends Controller
 
     protected function message(Request $request)
     {
+        $project = projects::where('id', $request->input('id_project'))->first();
+        $user = artist::where('id', auth()->user()->id)->first();
+        $message = messages::create([
+            'code' => Str::uuid(),
+            'sender_id' => $user->id,
+            'receiver_id' => $project->penerima_project,
+            'project_id' => $project->id,
+            'message' => $request->input('message')
+        ]);
+        $data = messages::with('messages')->get();
         try {
-            $message = messages::create([
-                'code' => Str::uuid(),
-                'sender_id' => Auth::user()->id,
-                'receiver_id' => 1,
-                'project_id' => $request->input('id_project'),
-                'message' => $request->input('message')
-            ]);
-            $data = messages::with('messages')->get();
-            // dd($message);
         } catch (\Throwable $th) {
             return redirect()->back();
         }
@@ -631,7 +642,7 @@ class ArtistVerifiedController extends Controller
     protected function rejectProject(Request $request)
     {
         $project = projects::where('code', $request->input('code'))->first();
-        dd($project);
+        // dd($project);
         try {
             $data = [
                 'code' => $project->code,
