@@ -129,7 +129,7 @@ class AdminController extends Controller
         return response()->view('admin.iklan', compact('artist', 'title', 'billboards'));
     }
 
-    public function editBillboard(Request $request, $billboards)
+    public function editBillboard(Request $request)
 {
     $validator = Validator::make(
         $request->only('artis_id'),

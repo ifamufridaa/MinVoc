@@ -43,13 +43,8 @@
 
 @section('content')
 <!-- Modal -->
-<<<<<<< HEAD
-
-  <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-=======
 @foreach ($artist as $item)
-<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
->>>>>>> b082318d1854a051dc6c80c899aa69a0e8d6f612
+  <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal bg-white">
